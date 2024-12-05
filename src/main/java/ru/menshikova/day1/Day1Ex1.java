@@ -7,6 +7,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Day1Ex1 {
     private static final String SEPARATOR = "   ";
@@ -33,5 +36,18 @@ public class Day1Ex1 {
         }
 
         System.out.println(result);
+
+        Map<Integer, Long> frequencyMap = left.stream()
+                .collect(Collectors.groupingBy(num -> num, Collectors.counting()));
+
+        Long result2 = right.stream()
+                .map(num -> {
+                    Long intersection = frequencyMap.get(num);
+                    return intersection == null ? null : intersection * num;
+                })
+                .filter(Objects::nonNull)
+                .reduce(0L, Long::sum);
+
+        System.out.println(result2);
     }
 }
